@@ -34,12 +34,24 @@
         Program *p = [[Program alloc] initWithTitle:[d objectForKey:@"Application"] 
                                                 url:[d objectForKey:@"Url"]  
                                  installationStatus:[d objectForKey:@"Status"]];
+        p.delegate = self;
         [applications addObject:p];
     }
     
 }
 
+- (void) programDidUpdate:(Program*)pgram {
+    [myTableView reloadData];
+}
+
 - (IBAction)installApplications:(id)sender {
+    
+    NSButton *button = (NSButton*)sender;
+    [button setEnabled:NO];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    for (Program *p in applications)
+        dispatch_async(queue, ^{ [p install]; });
     
 }
 
@@ -56,11 +68,17 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 {
     
     Program *p = [applications objectAtIndex:row];
+    
     if ([[tableColumn identifier] isEqualToString:@"Application"])
+        
         return p.title;
+    
     else if ([[tableColumn identifier] isEqualToString:@"Status"])
+        
         return p.installationStatus;
+    
     else
+        
         return @"ERROR";
     
 }

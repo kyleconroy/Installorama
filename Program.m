@@ -10,6 +10,7 @@
 
 @implementation Program
 
+@synthesize delegate;
 @synthesize title;
 @synthesize url;
 @synthesize installationStatus;
@@ -24,6 +25,13 @@
     }
     
     return self;
+}
+
+- (void) install {
+    
+    self.installationStatus = @"Complete!";
+    [delegate programDidUpdate:self];
+    
 }
 
 

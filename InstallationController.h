@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "Program.h"
 
-@interface InstallationController : NSObject <NSTableViewDelegate> {
+@interface InstallationController : NSObject <NSTableViewDelegate, ProgramDelegate> {
     
     IBOutlet NSTableView *myTableView;
     NSMutableArray *applications;

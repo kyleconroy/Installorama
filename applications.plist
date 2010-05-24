@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Application</key>
+		<string>Coda</string>
+		<key>Url</key>
+		<string>http://www.panic.com/coda/d/Coda%201.6.10.zip</string>
+		<key>Status</key>
+		<string>Ready</string>
+	</dict>
+	<dict>
+		<key>Application</key>
+		<string>Firefox</string>
+		<key>Url</key>
+		<string>http://mirrors.dotsrc.org/mozilla-current/firefox/releases/3.6.3/mac/en-US/Firefox%203.6.3.dmg</string>
+		<key>Status</key>
+		<string>Ready</string>
+	</dict>
+</array>
+</plist>

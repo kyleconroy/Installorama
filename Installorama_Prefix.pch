@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Installorama' target in the 'Installorama' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

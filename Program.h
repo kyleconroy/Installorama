@@ -24,6 +24,8 @@
     NSString *url;
     NSString *installationStatus;
     NSString *destinationFilename;
+    NSMutableString *currentStringValue;
+    NSMutableString *pastStringValue;
     long long totalLength;
     long long gotLength;
     
@@ -34,6 +36,8 @@
 @property (retain) NSString *url;
 @property (retain) NSString *installationStatus;
 @property (retain) NSString *destinationFilename;
+@property (retain) NSMutableString *currentStringValue;
+@property (retain) NSMutableString *pastStringValue;
 @property (readwrite) long long gotLength;
 @property (readwrite) long long totalLength;
 

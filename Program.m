@@ -17,6 +17,8 @@
 @synthesize destinationFilename;
 @synthesize gotLength;
 @synthesize totalLength;
+@synthesize currentStringValue;
+@synthesize pastStringValue;
 
 -(Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status {
     self = [super init];
@@ -219,9 +221,20 @@
     
     NSFileHandle *outputHandle = [tout fileHandleForReading];
     
-    NSString *plistError;
+    
+    //Load plist XML
     NSString *content = [NSString stringWithUTF8String:[[outputHandle availableData] bytes]];
-    NSLog(@"%@", content);
+    
+    NSDictionary *dmgInfo = [content propertyList];
+    
+//    NSXMLParser *dmgParser = [[NSXMLParser alloc] initWithData:[outputHandle availableData]];
+//    dmgParser.delegate = self;
+//    
+//    BOOL success = [dmgParser parse];
+//    
+//    if (success) {
+//
+//    }
     
     // List directory of mounted DMG
 
@@ -253,6 +266,36 @@
     [self updateStatus:@"Successfully installed"];
 }
 
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI 
+ qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+    
+    
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    
+    if (!currentStringValue) {
+        
+        currentStringValue = [[NSMutableString alloc] initWithCapacity:50];
+        
+    }
+    
+    [currentStringValue appendString:string];
+    
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI 
+qualifiedName:(NSString *)qName {
+    
+    NSLog(@"%@", currentStringValue);
+    
+    if ([currentStringValue isEqualToString:@"mount-point"]) {
+        NSLog(@"%@", currentStringValue);
+    }
+    
+    pastStringValue = currentStringValue;
+    
+}
 
 -(void) dealloc {
     [title release];

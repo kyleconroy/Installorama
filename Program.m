@@ -19,6 +19,7 @@
 @synthesize totalLength;
 @synthesize currentStringValue;
 @synthesize pastStringValue;
+@synthesize mountPoint;
 
 -(Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status {
     self = [super init];
@@ -44,7 +45,25 @@
     return [NSHomeDirectory() stringByAppendingPathComponent:@"Applications"];
 }
 
+- (NSURL*) installationUrl {
+    return [NSURL fileURLWithPath:[self installationDirectory] isDirectory:YES];
+}
+
 - (void) install {
+    
+    [self updateStatus:@"Checking for previous installed applications"];
+    
+    NSURL *installPath = [[self installationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", title]]; 
+    
+    NSLog(@"Install Path: %@", installPath);
+                         
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:installPath];
+    
+    if (exists) {
+        [self cleanUp]
+        [self updateStatus:@"Application alread installed, remove to continue"];
+        return;
+    }
     
     [self updateStatus:@"Downloading"];
     
@@ -194,8 +213,6 @@
         return;
     }
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     NSPipe *tout = [[NSPipe alloc] init];
     NSTask *task = [[NSTask alloc] init];
     
@@ -212,88 +229,125 @@
     
     
     if ([task terminationStatus] != 0) {
-        [self updateStatus:@"Could not mount DMG"];
         [self cleanUp];
+        [self updateStatus:@"Could not mount DMG"];
         [task release];
         [tout release];
         return;
     }
+    
+    [self updateStatus:@"Mounting Completed"];
     
     NSFileHandle *outputHandle = [tout fileHandleForReading];
     
     
     //Load plist XML
     NSString *content = [NSString stringWithUTF8String:[[outputHandle availableData] bytes]];
-    
     NSDictionary *dmgInfo = [content propertyList];
     
-//    NSXMLParser *dmgParser = [[NSXMLParser alloc] initWithData:[outputHandle availableData]];
-//    dmgParser.delegate = self;
-//    
-//    BOOL success = [dmgParser parse];
-//    
-//    if (success) {
-//
-//    }
-    
-    // List directory of mounted DMG
-
-    //NSArray *dmgFiles = [fileManager contentsOfDirectoryAtPath:[NSString stringWithFormat:@"/Volumes/%d", title] error:&error];
-    
-    // Copy over any .app files into the destination directory directory
-    
-    // Unmount the Dmg
-}
-
-- (void) cleanUp {
-    [self updateStatus:@"Deleting temporary files"];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL *isDir;
-    BOOL exists = [fileManager fileExistsAtPath:destinationFilename isDirectory:isDir];
-    
-    if (exists && !isDir) {
-        NSError *error;
-        BOOL success = [fileManager removeItemAtPath:destinationFilename error:&error];
-        
-        if (success) {
-            [self updateStatus:@"Deleted temporary files"];
-        } else {
-            [self updateStatus:@"Could not delete temporary files"];
+    for (NSDictionary *d in [dmgInfo objectForKey:@"system-entities"]) {
+        if ([d objectForKey:@"mount-point"]) {
+            mountPoint = [d objectForKey:@"mount-point"];
         }
     }
     
-    [self updateStatus:@"Successfully installed"];
-}
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI 
- qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+    [task release];
+    [tout release];
     
+    if (!mountPoint) {
+        [self cleanUp];
+        [self updateStatus:@"Could Not Find a suitable moint point"];
+        return;
+    }
     
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    // List directory of mounted DMG
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    if (!currentStringValue) {
+    NSURL *mountUrl = [NSURL fileURLWithPath:mountPoint isDirectory:YES];
+    
+    NSError *error;
+    NSArray *dmgFiles = [fileManager contentsOfDirectoryAtURL:mountUrl 
+                                   includingPropertiesForKeys:NULL
+                                                      options:NSDirectoryEnumerationSkipsSubdirectoryDescendants 
+                                                        error:&error];
+    
+    if (!dmgFiles) {
+        [self cleanUp];
+        [self updateStatus:@"Could not open volume"];
+        return;
+    }
+    
+    // Copy over any .app files into the destination directory directory
+    NSURL *destDir = [self installationUrl];
+    
+    for (NSURL *u in dmgFiles) {
         
-        currentStringValue = [[NSMutableString alloc] initWithCapacity:50];
+        if ([[u pathExtension] isEqualToString:@"app"]) {
+            
+            [self updateStatus:[NSString stringWithFormat:@"Copying %@ to installation directory", [u lastPathComponent]]];
+            
+            BOOL copySuccess = [fileManager copyItemAtURL:u 
+                                                    toURL:[NSURL URLWithString:[u lastPathComponent] relativeToURL:destDir] 
+                                                    error:&error];
+            
+            if (!copySuccess) {
+                [self cleanUp];
+                [self updateStatus:@"Failed copying some .app files"];
+                return;
+            }
+        }
+    }
+    
+    // Unmount the Dmg
+    [self cleanUp];
+    
+    // Tell the user everything went Ok
+    [self updateStatus:@"Installation Successful"];
+}
+
+- (void) cleanUp {
+    if (mountPoint) {
+        [self updateStatus:@"Unmounting Disk"];
+        
+        NSTask *task = [[NSTask alloc] init];
+        
+        [task setLaunchPath:@"/usr/bin/hdiutil"];
+        
+        NSArray *arguments = [NSArray arrayWithObjects: @"detach", mountPoint, @"-force", nil];
+        [task setArguments: arguments];
+        
+        [task launch];
+        [task waitUntilExit];
+        
+        if ([task terminationStatus] != 0) {
+            [self updateStatus:@"Could not unmount DMG"];
+        } else {
+            [self updateStatus:@"Disk Unmounted Successfully"];
+        }
         
     }
     
-    [currentStringValue appendString:string];
-    
-}
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI 
-qualifiedName:(NSString *)qName {
-    
-    NSLog(@"%@", currentStringValue);
-    
-    if ([currentStringValue isEqualToString:@"mount-point"]) {
-        NSLog(@"%@", currentStringValue);
+    if (destinationFilename) {
+        
+        [self updateStatus:@"Deleting temporary files"];
+        
+        return;
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        BOOL exists = [fileManager fileExistsAtPath:destinationFilename];
+        
+        if (exists) {
+            NSError *error;
+            BOOL success = [fileManager removeItemAtPath:destinationFilename error:&error];
+            
+            if (success) {
+                [self updateStatus:@"Deleted temporary files"];
+            } else {
+                [self updateStatus:@"Could not delete temporary files"];
+            }
+        }
+            
     }
-    
-    pastStringValue = currentStringValue;
     
 }
 

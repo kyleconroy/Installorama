@@ -24,6 +24,7 @@
     NSString *url;
     NSString *installationStatus;
     NSString *destinationFilename;
+    NSString *mountPoint;
     NSMutableString *currentStringValue;
     NSMutableString *pastStringValue;
     long long totalLength;
@@ -36,6 +37,7 @@
 @property (retain) NSString *url;
 @property (retain) NSString *installationStatus;
 @property (retain) NSString *destinationFilename;
+@property (retain) NSString *mountPoint;
 @property (retain) NSMutableString *currentStringValue;
 @property (retain) NSMutableString *pastStringValue;
 @property (readwrite) long long gotLength;
@@ -44,6 +46,7 @@
 - (Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status;
 
 - (NSString*) installationDirectory;
+- (NSURL*) installationUrl;
 
 - (void) install;
 - (void) installDmg;

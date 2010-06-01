@@ -53,14 +53,14 @@
     
     [self updateStatus:@"Checking for previous installed applications"];
     
-    NSURL *installPath = [[self installationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", title]]; 
+    NSString *installPath = [[self installationDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.app", title]]; 
     
     NSLog(@"Install Path: %@", installPath);
                          
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:installPath];
     
     if (exists) {
-        [self cleanUp]
+        [self cleanUp];
         [self updateStatus:@"Application alread installed, remove to continue"];
         return;
     }

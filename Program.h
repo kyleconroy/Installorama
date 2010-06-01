@@ -23,15 +23,34 @@
     NSString *title;
     NSString *url;
     NSString *installationStatus;
+    NSString *destinationFilename;
+    long long totalLength;
+    long long gotLength;
     
 }
 
 @property (assign) id <ProgramDelegate> delegate;
-@property (copy) NSString *title;
-@property (copy) NSString *url;
-@property (copy) NSString *installationStatus;
+@property (retain) NSString *title;
+@property (retain) NSString *url;
+@property (retain) NSString *installationStatus;
+@property (retain) NSString *destinationFilename;
+@property (readwrite) long long gotLength;
+@property (readwrite) long long totalLength;
 
 - (Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status;
+
+- (NSString*) installationDirectory;
+
 - (void) install;
+- (void) installDmg;
+- (void) installZip;
+- (void) updateStatus:(NSString*)info;
+- (void) cleanUp;
+
+- (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename;
+- (void)download:(NSURLDownload *)download didFailWithError:(NSError *)error;
+- (void)download:(NSURLDownload *)download didCreateDestination:(NSString *)path;
+- (void)download:(NSURLDownload *)download didReceiveDataOfLength:(NSUInteger)length;
+- (void)downloadDidFinish:(NSURLDownload *)download;
 
 @end

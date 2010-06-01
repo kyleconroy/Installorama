@@ -18,4 +18,10 @@
     //Magic!
 }
 
+-(void) dealloc {
+    [ic release];
+    [super dealloc];
+}
+
+
 @end

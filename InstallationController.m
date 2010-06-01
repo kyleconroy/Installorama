@@ -49,12 +49,25 @@
     NSButton *button = (NSButton*)sender;
     [button setEnabled:NO];
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //dispatch_async(queue, ^{ [p install]; });
+    
     for (Program *p in applications)
-        dispatch_async(queue, ^{ [p install]; });
+        [p install];
+        
+    [myTableView reloadData];
     
 }
 
+- (IBAction)debug:(id)sender {
+    Program *p = [[Program alloc] initWithTitle:@"Application" 
+                                            url:@"Url"  
+                             installationStatus:@"Status"];
+    
+    p.destinationFilename = @"/Users/kjconroy/Downloads/Firefox.dmg";
+    
+    [p installDmg];
+}
 
 /* Table View Delegate Methods */
 - (int)numberOfRowsInTableView:(NSTableView *)tableView
@@ -82,5 +95,14 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
         return @"ERROR";
     
 }
+
+-(void) dealloc {
+    NSLog(@"This should be only when I quit");
+    [myTableView release];
+    [applications release];
+    
+    [super dealloc];
+}
+
 
 @end

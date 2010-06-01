@@ -15,6 +15,6 @@
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (assign) InstallationController *ic;
+@property (assign) IBOutlet InstallationController *ic;
 
 @end

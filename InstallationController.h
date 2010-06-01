@@ -16,11 +16,13 @@
 
 }
 
-@property (assign) IBOutlet NSTableView *myTableView;
-@property (assign) NSMutableArray *applications;
+@property (retain) IBOutlet NSTableView *myTableView;
+@property (retain) NSMutableArray *applications;
 
 - (InstallationController*) init;
 - (void) loadApplicationsFromFile;
+
 - (IBAction)installApplications:(id)sender;
+- (IBAction)debug:(id)sender;
 
 @end

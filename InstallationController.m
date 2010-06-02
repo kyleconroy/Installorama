@@ -59,6 +59,7 @@
 - (IBAction)debug:(id)sender {
     Program *p = [[Program alloc] initWithTitle:@"Firefox" 
                                             url:@"http://download.mozilla.org/?product=firefox-3.6.3&os=osx&lang=en-US"];                 
+
     
     [p install];
     

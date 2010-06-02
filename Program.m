@@ -172,11 +172,9 @@
     NSLog(@"Unpacking zip");
     [self updateStatus:@"Unpacking zip"];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     NSString *destinationDir = [self installationDirectory];
     
-    NSTask *task = [[[NSTask alloc]init]autorelease];
+    NSTask *task = [[NSTask alloc] init];
     
     [task setLaunchPath:@"/usr/bin/ditto"];
     
@@ -187,21 +185,8 @@
     [task waitUntilExit];
     
     
-    NSError *error;
-    NSString* escapedPath = [destinationFilename  
-                             stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    NSURL *zipFileUrl = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"file://%@", escapedPath]];
-    
-    if (!zipFileUrl) {
-        NSLog(@"Escaped path is not valid RFC 2396 %@",escapedPath);
-    } else if (![fileManager removeItemAtURL:zipFileUrl error:&error]) {
-        NSLog(@"Could not delete file %@",zipFileUrl);
-        
-    }
-    [zipFileUrl release];
-    
     [self cleanUp];
+    [self updateStatus:@"Successfully Installed"];
     
 }
 
@@ -242,8 +227,12 @@
     
     
     //Load plist XML
-    NSString *content = [NSString stringWithUTF8String:[[outputHandle availableData] bytes]];
+    NSString *content = [[NSString alloc] initWithData:[outputHandle readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+    NSLog(@"content: %@", content);
+    
     NSDictionary *dmgInfo = [content propertyList];
+    
+    NSLog(@"DMGINFO: %@", dmgInfo);
     
     for (NSDictionary *d in [dmgInfo objectForKey:@"system-entities"]) {
         if ([d objectForKey:@"mount-point"]) {
@@ -330,8 +319,6 @@
     if (destinationFilename) {
         
         [self updateStatus:@"Deleting temporary files"];
-        
-        return;
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
         BOOL exists = [fileManager fileExistsAtPath:destinationFilename];

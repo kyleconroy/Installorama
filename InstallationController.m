@@ -49,9 +49,6 @@
     NSButton *button = (NSButton*)sender;
     [button setEnabled:NO];
     
-    //dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    //dispatch_async(queue, ^{ [p install]; });
-    
     for (Program *p in applications)
         [p install];
         
@@ -67,6 +64,7 @@
     p.destinationFilename = @"/Users/kjconroy/Downloads/Firefox.dmg";
     
     [p installDmg];
+    
 }
 
 /* Table View Delegate Methods */

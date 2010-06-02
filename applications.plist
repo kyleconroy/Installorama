@@ -4,6 +4,14 @@
 <array>
 	<dict>
 		<key>Application</key>
+		<string>Alfred</string>
+		<key>Url</key>
+		<string>http://media.alfredapp.com/alfred_0.6.2_beta_23.dmg</string>
+		<key>Status</key>
+		<string>Ready</string>
+	</dict>
+	<dict>
+		<key>Application</key>
 		<string>Coda</string>
 		<key>Url</key>
 		<string>http://www.panic.com/coda/d/Coda%201.6.10.zip</string>

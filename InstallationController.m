@@ -32,8 +32,8 @@
     
     for (NSDictionary *d in apps) {
         Program *p = [[Program alloc] initWithTitle:[d objectForKey:@"Application"] 
-                                                url:[d objectForKey:@"Url"]  
-                                 installationStatus:[d objectForKey:@"Status"]];
+                                                url:[d objectForKey:@"Url"]];
+        p.installationStatus = @"Ready to Install";
         p.delegate = self;
         [applications addObject:p];
     }
@@ -57,13 +57,10 @@
 }
 
 - (IBAction)debug:(id)sender {
-    Program *p = [[Program alloc] initWithTitle:@"Application" 
-                                            url:@"Url"  
-                             installationStatus:@"Status"];
+    Program *p = [[Program alloc] initWithTitle:@"Firefox" 
+                                            url:@"http://www.mozilla.com/products/download.html?product=firefox-3.6.3&os=osx&lang=en-US"];
     
-    p.destinationFilename = @"/Users/kjconroy/Downloads/Firefox.dmg";
-    
-    [p installDmg];
+    [p install];
     
 }
 

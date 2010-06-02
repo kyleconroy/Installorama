@@ -43,7 +43,7 @@
 @property (readwrite) long long gotLength;
 @property (readwrite) long long totalLength;
 
-- (Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status;
+- (Program*) initWithTitle:(NSString*)app url:(NSString*)durl;
 
 - (NSString*) installationDirectory;
 - (NSURL*) installationUrl;

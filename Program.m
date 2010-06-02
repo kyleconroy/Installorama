@@ -21,13 +21,12 @@
 @synthesize pastStringValue;
 @synthesize mountPoint;
 
--(Program*) initWithTitle:(NSString*)app url:(NSString*)durl installationStatus:(NSString*)status {
+-(Program*) initWithTitle:(NSString*)app url:(NSString*)durl {
     self = [super init];
     
     if ( self ) {
         self.title = app;
         self.url = durl;
-        self.installationStatus = status;
         self.gotLength = 0;
         self.totalLength = 0;
     }
@@ -154,13 +153,14 @@
         else if ([[url pathExtension] isEqualToString:@"zip"])
             [self installZip];
         else {
-            [self updateStatus:[NSString stringWithFormat:@"Error: Could not install file with extension %@", [url pathExtension]]];
             [self cleanUp];
+            [self updateStatus:[NSString stringWithFormat:@"Error: Could not install file with extension %@", [url pathExtension]]];
         }
         
     } else {
-        NSLog(@"Download destination not set");
         [self cleanUp];
+        NSLog(@"Download destination not set");
+        
     }
     
     [download release];

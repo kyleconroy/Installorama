@@ -3,28 +3,136 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>Application</key>
+		<string>Trasmit</string>
+		<key>Url</key>
+		<string>http://www.panic.com/transmit/d/Transmit%204.0.4.zip</string>
+		<key>Price</key>
+		<integer>34</integer>
+		<key>Trial</key>
+		<integer>7</integer>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string></string>
+		<key>Application</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string></string>
+		<key>Application</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string></string>
+		<key>Application</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Url</key>
+		<string>http://colloquy.info/downloads/colloquy-latest.zip</string>
+		<key>Application</key>
+		<string>Colloquy</string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string>http://download.mozilla.org/?product=camino-2.0.3&amp;os=osx&amp;lang=en-US</string>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Application</key>
+		<string>Camino</string>
+	</dict>
+	<dict>
+		<key>Trial</key>
+		<integer>14</integer>
+		<key>Url</key>
+		<string>http://flyingmeat.com/download/Acorn.zip</string>
+		<key>Price</key>
+		<real>49.95</real>
+		<key>Application</key>
+		<string>Acorn</string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string>http://download.mozilla.org/?product=thunderbird-3.0.4&amp;os=osx&amp;lang=en-US</string>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Application</key>
+		<string>Thunderbird</string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string>http://www.skype.com/go/getskype-macosx.dmg</string>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Application</key>
+		<string>Skype</string>
+	</dict>
+	<dict>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Url</key>
+		<string>http://ranchero.com/downloads/NetNewsWire.zip</string>
+		<key>Application</key>
+		<string>NetNewsWire</string>
+	</dict>
+	<dict>
+		<key>Trial</key>
+		<integer>30</integer>
+		<key>Price</key>
+		<real>39.95</real>
+		<key>Url</key>
+		<string>http://aws.cachefly.net/aws/dmg/1PW3/English/1Password-3.1.3.dmg</string>
+		<key>Application</key>
+		<string>1Password</string>
+	</dict>
+	<dict>
+		<key>Url</key>
+		<string>http://www.opera.com/download/get.pl?id=32843&amp;location=270&amp;thanks=yes&amp;sub=++++</string>
+		<key>Application</key>
+		<string>Opera</string>
+		<key>Price</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
 		<key>Url</key>
 		<string>http://adiumx.cachefly.net/Adium_1.3.10.dmg</string>
 		<key>Application</key>
 		<string>Adium</string>
+		<key>Price</key>
+		<integer>0</integer>
 	</dict>
 	<dict>
 		<key>Application</key>
 		<string>Alfred</string>
 		<key>Url</key>
 		<string>http://media.alfredapp.com/alfred_0.6.2_beta_23.dmg</string>
+		<key>Price</key>
+		<integer>0</integer>
 	</dict>
 	<dict>
 		<key>Application</key>
 		<string>Coda</string>
 		<key>Url</key>
 		<string>http://www.panic.com/coda/d/Coda%201.6.10.zip</string>
+		<key>Price</key>
+		<integer>99</integer>
+		<key>Trial</key>
+		<integer>14</integer>
 	</dict>
 	<dict>
 		<key>Application</key>
 		<string>Firefox</string>
+		<key>Price</key>
+		<integer>0</integer>
 		<key>Url</key>
 		<string>http://mirrors.dotsrc.org/mozilla-current/firefox/releases/3.6.3/mac/en-US/Firefox%203.6.3.dmg</string>
+		<key>Text</key>
+		<string>Check the source code at &lt;http://www.mozilla.com/en-US/products/download.html?product=firefox-3.6.3&amp;os=osx&amp;lang=en-US&gt;. In the Javascript they have the formula for creating download links. Example Firefox link</string>
 	</dict>
 </array>
 </plist>

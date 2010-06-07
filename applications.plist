@@ -3,6 +3,42 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>hasAgreement</key>
+		<true/>
+		<key>Price</key>
+		<integer>0</integer>
+		<key>Application</key>
+		<string>Skitch</string>
+		<key>Url</key>
+		<string>http://get.skitch.com/skitch-beta.dmg</string>
+	</dict>
+	<dict>
+		<key>Price</key>
+		<integer>59</integer>
+		<key>Trial</key>
+		<integer>0</integer>
+		<key>Application</key>
+		<string>Pixelmator</string>
+		<key>Url</key>
+		<string>http://www.pixelmator.com/download/</string>
+	</dict>
+	<dict>
+		<key>Application</key>
+		<string>Plex</string>
+		<key>Url</key>
+		<string>http://plex.sheth.com/Plex-v0.8.5.dmg</string>
+		<key>Price</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>Application</key>
+		<string>doubleTwist</string>
+		<key>Url</key>
+		<string>http://download.doubletwist.com/doubleTwist.dmg</string>
+		<key>Price</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
 		<key>Price</key>
 		<integer>0</integer>
 		<key>Url</key>
@@ -12,7 +48,7 @@
 	</dict>
 	<dict>
 		<key>Application</key>
-		<string>Trasmit</string>
+		<string>Transmit</string>
 		<key>Url</key>
 		<string>http://www.panic.com/transmit/d/Transmit%204.0.4.zip</string>
 		<key>Price</key>
@@ -24,7 +60,7 @@
 		<key>Price</key>
 		<integer>0</integer>
 		<key>Url</key>
-		<string>http://www.videolan.org/mirror-geo.php?file=vlc/1.0.5/macosx/vlc-1.0.5-intel.dmg</string>
+		<string>http://videolan.cdn.cacheboy.net/vlc/1.0.5/macosx/vlc-1.0.5.dmg</string>
 		<key>Application</key>
 		<string>VLC</string>
 	</dict>
@@ -39,6 +75,8 @@
 		<string>Things</string>
 	</dict>
 	<dict>
+		<key>hasAgreement</key>
+		<true/>
 		<key>Version</key>
 		<string>1.7.5</string>
 		<key>Trial</key>
@@ -46,7 +84,7 @@
 		<key>Price</key>
 		<real>79.95</real>
 		<key>Url</key>
-		<string>http://www.omnigroup.com/ftp1/pub/software/MacOSX/10.4/OmniFocus-1.7.5.dmg</string>
+		<string>http://www.omnigroup.com/ftp1/pub/software/MacOSX/10.4/OmniFocus-1.7.5.dmgWRONG</string>
 		<key>Application</key>
 		<string>OmniFocus</string>
 	</dict>
@@ -116,7 +154,7 @@
 	</dict>
 	<dict>
 		<key>Url</key>
-		<string>http://www.opera.com/download/get.pl?id=32843&amp;location=270&amp;thanks=yes&amp;sub=++++</string>
+		<string>http://get.opera.com/pub/opera/mac/1053/Opera_10.53_Setup_Intel.dmg</string>
 		<key>Application</key>
 		<string>Opera</string>
 		<key>Price</key>

@@ -12,12 +12,12 @@
 @interface InstallationController : NSObject <NSTableViewDelegate, ProgramDelegate> {
     
     IBOutlet NSTableView *myTableView;
-    NSMutableArray *applications;
+    NSArray *applications;
 
 }
 
 @property (retain) IBOutlet NSTableView *myTableView;
-@property (retain) NSMutableArray *applications;
+@property (retain) NSArray *applications;
 
 - (InstallationController*) init;
 - (void) loadApplicationsFromFile;

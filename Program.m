@@ -11,7 +11,9 @@
 @implementation Program
 
 @synthesize delegate;
+@synthesize hasAgreement;
 @synthesize title;
+@synthesize progress;
 @synthesize url;
 @synthesize installationStatus;
 @synthesize destinationFilename;
@@ -29,6 +31,8 @@
         self.url = durl;
         self.gotLength = 0;
         self.totalLength = 0;
+        self.hasAgreement = NO;
+        self.progress = 0;
     }
     
     return self;
@@ -59,8 +63,12 @@
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:installPath];
     
     if (exists) {
-        [self cleanUp];
-        [self updateStatus:@"Application alread installed, remove to continue"];
+        [self updateStatus:@"Already installed"];
+        return;
+    }
+    
+    if (hasAgreement) {
+        [self updateStatus:@"Application has a EULA, skip for now"];
         return;
     }
     
@@ -138,7 +146,13 @@
         gotLength += length;
         float currentValue = (float) gotLength;
         float totalValue = (float) totalLength;
-        [self updateStatus:[NSString stringWithFormat:@"%.2f%% downloaded", (currentValue / totalValue) * 100]]; 
+        float currentProgress = (currentValue / totalValue) * 100;
+        
+        if ((currentProgress - progress) > 1) {
+            progress = currentProgress;
+            [self updateStatus:[NSString stringWithFormat:@"%.2f%% downloaded", currentProgress]]; 
+        }
+
     }
     
 }
@@ -148,13 +162,15 @@
 {
     if (destinationFilename) {
         
-        if ([[url pathExtension] isEqualToString:@"dmg"])
+        NSURL *destinationURL = [NSURL fileURLWithPath:destinationFilename isDirectory:NO];
+        
+        if ([[destinationURL pathExtension] isEqualToString:@"dmg"])
             [self installDmg];
-        else if ([[url pathExtension] isEqualToString:@"zip"])
+        else if ([[destinationURL pathExtension] isEqualToString:@"zip"])
             [self installZip];
         else {
             [self cleanUp];
-            [self updateStatus:[NSString stringWithFormat:@"Error: Could not install file with extension %@", [url pathExtension]]];
+            [self updateStatus:[NSString stringWithFormat:@"Error: Could not install file with extension %@", [destinationURL pathExtension]]];
         }
         
     } else {
@@ -186,7 +202,7 @@
     
     
     [self cleanUp];
-    [self updateStatus:@"Successfully Installed"];
+    [self updateStatus:@"Installation Successful"];
     
 }
 
@@ -273,10 +289,21 @@
         
         if ([[u pathExtension] isEqualToString:@"app"]) {
             
-            [self updateStatus:[NSString stringWithFormat:@"Copying %@ to installation directory", [u lastPathComponent]]];
+            NSString* escapedPathComponent = 
+                [[u lastPathComponent] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            NSURL *appURL = [NSURL URLWithString:escapedPathComponent relativeToURL:destDir];
+            
+            if (!appURL) {
+                [self cleanUp];
+                [self updateStatus:@"Failed copying some .app files"];
+                return;
+            }
+            
+            [self updateStatus:[NSString stringWithFormat:@"Copying %@ to %@", [u lastPathComponent], appURL]];
             
             BOOL copySuccess = [fileManager copyItemAtURL:u 
-                                                    toURL:[NSURL URLWithString:[u lastPathComponent] relativeToURL:destDir] 
+                                                    toURL:appURL 
                                                     error:&error];
             
             if (!copySuccess) {
@@ -328,9 +355,9 @@
             BOOL success = [fileManager removeItemAtPath:destinationFilename error:&error];
             
             if (success) {
-                [self updateStatus:@"Deleted temporary files"];
+                [self updateStatus:[NSString stringWithFormat:@"Deleted %@", destinationFilename]];
             } else {
-                [self updateStatus:@"Could not delete temporary files"];
+                [self updateStatus:[NSString stringWithFormat:@"Could not delete %@", destinationFilename]];
             }
         }
             

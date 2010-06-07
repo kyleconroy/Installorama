@@ -20,6 +20,7 @@
 @interface Program : NSObject {
     
     id <ProgramDelegate> delegate;
+    bool hasAgreement;
     NSString *title;
     NSString *url;
     NSString *installationStatus;
@@ -29,6 +30,7 @@
     NSMutableString *pastStringValue;
     long long totalLength;
     long long gotLength;
+    float progress;
     
 }
 
@@ -40,6 +42,8 @@
 @property (retain) NSString *mountPoint;
 @property (retain) NSMutableString *currentStringValue;
 @property (retain) NSMutableString *pastStringValue;
+@property (readwrite) bool hasAgreement;
+@property (readwrite) float progress;
 @property (readwrite) long long gotLength;
 @property (readwrite) long long totalLength;
 

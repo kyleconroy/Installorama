@@ -25,7 +25,7 @@
 
 - (void) loadApplicationsFromFile {
     
-    applications = [[NSMutableArray alloc] init];
+    NSMutableArray *appTemp = [NSMutableArray arrayWithCapacity:0];
     
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"applications" ofType:@"plist"];
     NSArray *apps = [NSArray arrayWithContentsOfFile:plistPath];
@@ -34,9 +34,23 @@
         Program *p = [[Program alloc] initWithTitle:[d objectForKey:@"Application"] 
                                                 url:[d objectForKey:@"Url"]];
         p.installationStatus = @"Ready to Install";
+        
+        if ([d objectForKey:@"hasAgreement"])
+            p.hasAgreement = YES;
+        
         p.delegate = self;
-        [applications addObject:p];
+        [appTemp addObject:p];
     }
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    
+    applications = [appTemp sortedArrayUsingDescriptors:sortDescriptors];
+    
+    
+    [applications retain];
+    [sortDescriptor release];
+    [sortDescriptors release];
     
 }
 

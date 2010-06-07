@@ -23,6 +23,9 @@
 @synthesize pastStringValue;
 @synthesize mountPoint;
 
+@synthesize mountOut;
+@synthesize mountTask;
+
 -(Program*) initWithTitle:(NSString*)app url:(NSString*)durl {
     self = [super init];
     
@@ -214,11 +217,11 @@
         return;
     }
     
-    NSPipe *tout = [[NSPipe alloc] init];
-    NSTask *task = [[NSTask alloc] init];
+    NSPipe *mountOut = [[NSPipe alloc] init];
+    NSTask *mountTask = [[NSTask alloc] init];
     
-    [task setLaunchPath:@"/usr/bin/hdiutil"];
-    [task setStandardOutput:tout];
+    [mountTask setLaunchPath:@"/usr/bin/hdiutil"];
+    [mountTask setStandardOutput:mountOut];
     
     
     // TODO Add @"-nobrowse" back into the mix

@@ -28,6 +28,8 @@
     NSString *mountPoint;
     NSMutableString *currentStringValue;
     NSMutableString *pastStringValue;
+    NSPipe *mountOut;
+    NSTask *mountTask;
     long long totalLength;
     long long gotLength;
     float progress;
@@ -42,6 +44,8 @@
 @property (retain) NSString *mountPoint;
 @property (retain) NSMutableString *currentStringValue;
 @property (retain) NSMutableString *pastStringValue;
+@property (retain) NSPipe *mountOut;
+@property (retain) NSTask *mountTask;
 @property (readwrite) bool hasAgreement;
 @property (readwrite) float progress;
 @property (readwrite) long long gotLength;
